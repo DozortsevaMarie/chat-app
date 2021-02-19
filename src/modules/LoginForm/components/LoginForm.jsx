@@ -5,10 +5,17 @@ import {BaseButton} from "../../../components";
 import {Link} from "react-router-dom";
 import {Block} from "../../../components";
 
-const LoginForm = () => {
-	const onFinish = (values) => {
-		console.log('Received values of form: ', values);
-	};
+const LoginForm = (props) => {
+	const {
+		values,
+		touched,
+		errors,
+		handleChange,
+		handleBlur,
+		handleSubmit,
+		isValid,
+		isSubmitting
+	} = props;
 	return (
 		<>
 			<div className="auth__top">
@@ -19,42 +26,44 @@ const LoginForm = () => {
 				<Form
 					name="normal_login"
 					className="login-form"
-					onFinish={onFinish}
+					onSubmit={handleSubmit}
 				>
 					<Form.Item
 						hasFeedback
-						validateStatus="success"
-						name="username"
-						rules={[
-							{
-								required: true,
-								message: 'Введите логин!',
-							},
-						]}
+						validateStatus={!touched.email ? "" :
+							errors.email && touched.email ? "error" : "success"}
+						help={!touched.email ? "" : errors.email}
+
 					>
-						<Input prefix={<UserOutlined className="site-form-item-icon"/>}
-							   placeholder="Username"
-							   style={{height: "56px"}}/>
+						<Input id="email"
+							   placeholder="E-Mail"
+							   style={{height: "56px"}}
+							   value={values.email}
+							   onChange={handleChange}
+							   onBlur={handleBlur}
+						/>
 
 					</Form.Item>
 					<Form.Item
 						name="password"
-						rules={[
-							{
-								required: true,
-								message: 'Введите пароль!',
-							},
-						]}
+						hasFeedback
+						validateStatus={!touched.password ? "" :
+							errors.password && touched.password ? "error" : "success"}
+						help={!touched.password ? "" : errors.password}
 					>
 						<Input
 							prefix={<LockOutlined className="site-form-item-icon"/>}
+							id="password"
 							type="password"
-							placeholder="Password"
+							placeholder="Пароль"
+							value={values.password}
+							onChange={handleChange}
+							onBlur={handleBlur}
 							style={{height: "56px"}}
 						/>
 					</Form.Item>
 					<Form.Item>
-						<BaseButton props={{type: "primary"}}>Войти в аккаунт</BaseButton>
+						<BaseButton props={{type: "primary", onClick: handleSubmit}} >Войти в аккаунт</BaseButton>
 					</Form.Item>
 					<Form.Item>
 						<Link className="auth__register-link" to="/register">Зарегестрироваться</Link>
