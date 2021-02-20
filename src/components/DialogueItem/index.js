@@ -2,6 +2,17 @@ import React from "react";
 import {ReadIcon} from "../index";
 import "./DialogueItem.scss";
 import classNames from "classnames";
+import format from "date-fns/format";
+import isToday from "date-fns/isToday";
+
+const getMessageItem = created_at => {
+	if (isToday(created_at)) {
+		return format("HH:ss")
+	}
+	else {
+		return format (created_at, "dd.MM.yyyy")
+	}
+}
 
 const getAvatar = avatar => {
 	if (avatar) {
@@ -13,7 +24,7 @@ const getAvatar = avatar => {
 	}
 }
 
-const DialogueItem = ({user, message, isOnline, unread}) => {
+const DialogueItem = ({user, message, unread, created_at, isMe}) => {
 	return (
 		<div className={classNames("dialogues__item", {"dialogues__item--online": user.isOnline})}>
 			<div className="dialogues__item-avatar">
@@ -21,16 +32,15 @@ const DialogueItem = ({user, message, isOnline, unread}) => {
 			</div>
 			<div className="dialogues__item-info">
 				<div className="dialogues__item-info-top">
-					<b>Фёдор Достоевский</b>
+					<b>{user.fullname}</b>
 					<span>
-						13.03
+						{getMessageItem(created_at)}
 						{/*<Time date={new Date()}/>*/}
 					</span>
 				</div>
 				<div className="dialogues__item-info-bottom">
-					<p>Мы все свидетельствуем Вам глубочайшее наше почтение и целуем Ваши ручки, дражайший папенька:
-						Михайла, Федор, Варвара и Андрюша</p>
-					<ReadIcon isRead={false} isMe={true}/>
+					<p>{message}</p>
+					{isMe && <ReadIcon isRead={false} isMe={true}/>}
 					{unread > 0 && <div className="dialogues__item-info-bottom-count">{unread > 9 ? "+9" : unread}</div>}
 				</div>
 			</div>

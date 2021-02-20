@@ -67,6 +67,49 @@
     }
   }
 
+  &--is-audio {
+    #{$self}__bubble {
+      position: relative;
+      overflow: hidden;
+      width: 250px;
+    }
+    #{$self}__audio {
+      &-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+      &-progress {
+        background-color: #418fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        transition: width 0.3s ease;
+      }
+      &-btn {
+        button {
+          cursor: pointer;
+          width: 28px;
+          height: 28px;
+          border-radius: 30px;
+          background-color: #0f3997;
+          border: 0;
+          img {
+            height: 13px;
+          }
+        }
+      }
+      &-duration {
+        color: #ffffff;
+        font-weight: 500;
+        opacity: 0.5;
+        font-size: 12px;
+      }
+    }
+  }
+
   &--isMe {
     display: flex;
     flex-direction: row-reverse;
@@ -115,16 +158,16 @@
   }
 
 
-&--image {
-  #{$self}__attachments {
-    &-item {
-      img {
-        width: 150px;
-        height: 150px;
+  &--image {
+    #{$self}__attachments {
+      &-item {
+        img {
+          width: 150px;
+          height: 150px;
+        }
       }
     }
   }
-}
 
 
   &__isTyping {
@@ -135,16 +178,15 @@
       background: $typing_dot;
       display: inline-block;
       margin-right: 7px;
-      animation-name: typingAnimation;
-      animation-duration: 0.5s;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
+      animation: 0.8s typingAnimation infinite ease-out 0.1s;
 
       &:nth-of-type(2) {
-        animation-duration: .6s;
+        animation: 0.8s typingAnimation infinite ease-out 0.2s;
       }
+
       &:nth-of-type(3) {
-        animation-duration: .7s;
+        animation: 0.8s typingAnimation infinite ease-out 0.3s;
+        margin-right: 0;
       }
     }
   }
@@ -152,10 +194,16 @@
 
 @keyframes typingAnimation {
   from {
-    opacity: 0;
+    opacity: 0.2;
+    transform: translateY(0px);
   }
- to {
+  50% {
+    opacity: 0.5;
+    transform: translateY(-1.5px);
+  }
+  to {
     opacity: 1;
+    transform: translateY(-1px);
   }
 }
 
